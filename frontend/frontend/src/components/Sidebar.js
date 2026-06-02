@@ -12,8 +12,6 @@ function Sidebar({ playlists = [], onPlaylistCreated, onPlaylistSelect, selected
   const navigate = useNavigate();
 
   const [modalVisible, setModalVisible] = useState(false);
-  const [toastVisible, setToastVisible] = useState(false);
-  const [toastMessage, setToastMessage] = useState('');
 
   const handleCreatePlaylist = () => {
     setModalVisible(true);
@@ -30,8 +28,6 @@ function Sidebar({ playlists = [], onPlaylistCreated, onPlaylistSelect, selected
 
   const [confirmVisible, setConfirmVisible] = useState(false);
   const [confirmTarget, setConfirmTarget] = useState(null);
-
-  const handleLinkClick = (e) => e.preventDefault();
 
   const handleHomeClick = (e) => {
     e.preventDefault();

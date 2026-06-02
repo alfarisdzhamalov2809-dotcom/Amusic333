@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Routes, Route, useMatch, useLocation } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import MainContent from './MainContent';
@@ -170,7 +170,10 @@ function Layout() {
     }
   }, [location.pathname]);
 
-  const tracksToDisplay = selectedPlaylist ? selectedPlaylist.tracks : allTracks || [];
+  const tracksToDisplay = useMemo(
+    () => (selectedPlaylist ? selectedPlaylist.tracks : allTracks) || [],
+    [selectedPlaylist, allTracks]
+  );
   const currentTrack = (allTracks || []).find(track => track._id === currentTrackId) || tracksToDisplay[currentTrackIndex];
 
   const selectTrack = (index) => {
