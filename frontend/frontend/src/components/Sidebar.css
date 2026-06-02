@@ -1,0 +1,187 @@
+.sidebar {
+  grid-area: sidebar;
+  background-color: var(--bg-secondary);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  border-right: 1px solid var(--border-color);
+}
+
+.sidebar-logo {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+  margin-bottom: 8px;
+  letter-spacing: 0.3px;
+}
+
+.sidebar-nav ul {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sidebar-nav ul li a {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 12px;
+  border-radius: 6px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  transition: all 0.2s;
+  font-size: 0.95rem;
+}
+
+.sidebar-nav ul li a:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+}
+
+.sidebar-nav ul li a.active {
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+}
+
+.sidebar-library {
+  border-top: 1px solid var(--border-color);
+  padding-top: 16px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.library-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  color: var(--text-secondary);
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.library-header svg {
+  font-size: 1.2rem;
+}
+
+.library-header span {
+    margin-left: 8px;
+}
+
+.add-playlist-btn {
+  font-size: 20px;
+  color: var(--text-secondary);
+  transition: all 0.2s;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.add-playlist-btn:hover {
+  color: var(--accent-green);
+  transform: scale(1.15);
+}
+
+.playlist-list {
+  margin-top: 10px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.playlist-list li {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.playlist-item {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  color: var(--text-secondary);
+}
+
+.playlist-item:hover {
+  background-color: #2a2a2a;
+}
+
+.playlist-item .playlist-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text-secondary);
+}
+
+.playlist-item.active-playlist {
+  background-color: #2a2a2a;
+}
+
+.playlist-item.active-playlist .playlist-name {
+  color: var(--text-primary);
+}
+
+.playlist-actions {
+  display: flex;
+  gap: 8px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.playlist-item:hover .playlist-actions {
+  opacity: 1;
+}
+
+.action-btn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 4px 8px;
+  transition: color 0.2s;
+  display: flex;
+  align-items: center;
+}
+
+.action-btn:hover {
+  color: var(--text-primary);
+}
+
+.user-section {
+  padding-top: 12px;
+  border-top: 1px solid var(--border-color);
+}
+
+.logout-button {
+  background-color: var(--bg-card); 
+  color: var(--text-secondary); 
+  border: 1px solid var(--border-color); 
+  width: 100%;
+  padding: 10px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.9em; 
+  font-weight: 500;
+  transition: all 0.2s;
+}
+.logout-button:hover {
+  border-color: var(--text-primary);
+  color: var(--text-primary);
+}

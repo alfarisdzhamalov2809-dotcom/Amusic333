@@ -1,0 +1,160 @@
+.main-content {
+  grid-area: main;
+  background: linear-gradient(180deg, #1a1a1a 0%, #121212 35%);
+  padding: 24px;
+  overflow-y: auto;
+}
+
+.playlist-header {
+  display: flex;
+  align-items: flex-end;
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+.playlist-cover-large {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.6);
+  flex-shrink: 0;
+}
+
+.playlist-details { 
+  display: flex; 
+  flex-direction: column;
+  gap: 16px;
+  flex-grow: 1;
+}
+
+.playlist-type { 
+  font-size: 0.875rem; 
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  letter-spacing: 0.5px;
+}
+
+.playlist-details h1 { 
+  font-size: 3.5rem; 
+  font-weight: 900; 
+  margin: 0; 
+  line-height: 1;
+  color: var(--text-primary);
+}
+
+.playlist-meta { 
+  color: var(--text-secondary); 
+  font-size: 0.95rem;
+}
+
+.track-list-container { 
+  padding: 0; 
+}
+
+.track-table { 
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.track-table th { 
+  text-align: left; 
+  color: var(--text-secondary); 
+  font-size: 0.75rem; 
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid var(--border-color); 
+  padding: 12px 8px;
+}
+
+.track-table th:first-child {
+  width: 4%;
+}
+
+.track-row { 
+  cursor: pointer; 
+  border-radius: 4px; 
+  transition: background-color 0.2s;
+}
+
+.track-row:hover { 
+  background-color: var(--bg-card); 
+}
+
+.track-row.active { 
+  background-color: rgba(29, 185, 84, 0.1);
+}
+
+.track-row td { 
+  padding: 12px 8px; 
+  color: var(--text-secondary); 
+  vertical-align: middle;
+  border-bottom: 1px solid rgba(40, 40, 40, 0.5);
+}
+
+.track-row:last-child td {
+  border-bottom: none;
+}
+
+.track-row:hover td {
+  color: var(--text-primary);
+}
+
+.track-info-cell { 
+  display: flex; 
+  align-items: center; 
+  gap: 12px;
+}
+
+.track-cover-small { 
+  width: 40px; 
+  height: 40px; 
+  object-fit: cover; 
+  border-radius: 4px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.track-name-artist { 
+  display: flex; 
+  flex-direction: column;
+  gap: 4px;
+}
+
+.track-name { 
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.track-artist { 
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.duration-cell { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center;
+  gap: 8px;
+}
+
+.add-to-playlist-btn { 
+  background: none; 
+  border: none; 
+  color: var(--text-secondary); 
+  font-size: 18px;
+  opacity: 0; 
+  transition: all 0.2s;
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
+.track-row:hover .add-to-playlist-btn { 
+  opacity: 1; 
+}
+
+.add-to-playlist-btn:hover { 
+  color: var(--accent-green);
+  transform: scale(1.1);
+}

@@ -1,0 +1,16 @@
+@echo off
+echo Starting AMusic Application...
+echo.
+echo 1. Opening Backend Server...
+start cmd /k "cd /d %~dp0backend && npm install && node seed.js && node server.js"
+echo.
+echo 2. Waiting 3 seconds before starting Frontend...
+timeout /t 3
+echo.
+echo 3. Opening Frontend Server...
+start cmd /k "cd /d %~dp0frontend\frontend && npm install && npm start"
+echo.
+echo Both servers should now be starting...
+echo Backend: http://localhost:5000
+echo Frontend: http://localhost:3000
+pause
