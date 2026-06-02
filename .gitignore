@@ -1,0 +1,98 @@
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+.pnp
+.pnp.js
+
+# Production / Build artifacts
+/build/
+/dist/
+/.next/
+/out/
+/coverage/
+
+# Frontend React specific
+frontend/frontend/build/
+frontend/frontend/dist/
+frontend/frontend/.cache/
+
+# Backend specific
+backend/node_modules/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+.env.production.local
+.env.development.local
+.env.test.local
+
+# IDE & Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+.project
+.classpath
+*.sublime-project
+*.sublime-workspace
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# Testing
+.nyc_output/
+/test-results/
+/.coverage
+*.coverage
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# OS files
+Thumbs.db
+desktop.ini
+.Spotlight-V100
+.Trashes
+
+# Temporary files
+*.tmp
+*.temp
+tmp/
+temp/
+
+# Build system
+.grunt/
+bower_components/
+.bowerrc
+
+# Git LFS (if not already stored)
+# Placeholder files for LFS objects should not be committed
+# .gitattributes handles this properly
+
+# Media files (managed by Git LFS)
+# *.mp3
+# *.png
+# *.jpg
+# *.jpeg
+# *.svg
+
+# VS Code user settings (keep settings.json)
+.vscode/settings.json
+.vscode/extensions.json
+!.vscode/settings.json
+
+# Local shortcut/link files (Windows)
+*.lnk
