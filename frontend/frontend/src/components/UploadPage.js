@@ -62,6 +62,11 @@ function UploadPage({ onTrackUploaded }) {
     }
 
     const token = localStorage.getItem('token');
+    if (!token) {
+      setMessage('❌ Ошибка: вы не авторизованы. Войдите в систему и попробуйте снова.');
+      return;
+    }
+
     setMessage('');
     setLoading(true);
 
