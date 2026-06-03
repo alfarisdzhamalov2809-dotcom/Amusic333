@@ -318,7 +318,7 @@ app.delete('/api/tracks/:trackId', authMiddleware, async (req, res) => {
 });
 
 if (require.main === module) {
-  app.listen(PORT, () => {
+  app.listen(PORT, '0.0.0.0', () => {
     console.log(`Сервер запущен на порту ${PORT}`);
   });
 }
