@@ -66,7 +66,7 @@ function MainContent({ tracks, playlists = [], onTrackSelect, currentTrackIndex,
                 <td>{index + 1}</td>
                 <td>
                   <div className="track-info-cell">
-                    <img src={track.cover} alt="Track Cover" className="track-cover-small" />
+                    <img src={track.cover && track.cover.startsWith('http') ? track.cover : `https://amusic333-production.up.railway.app${track.cover}`} alt="Track Cover" className="track-cover-small" />
                     <div className="track-name-artist">
                       <span className="track-name">{track.title}</span>
                       <span className="track-artist">{track.artist}</span>

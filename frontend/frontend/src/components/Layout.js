@@ -280,10 +280,18 @@ function Layout() {
   if (allTracks === null) {
   }
 
+  const getFullUrl = (url) => {
+    if (!url) return '';
+    // Если уже полный URL (содержит http), возвращаем как есть
+    if (url.startsWith('http')) return url;
+    // Иначе добавляем Railway URL
+    return `https://amusic333-production.up.railway.app${url}`;
+  };
+
   return (
     <>
       <ToastManager />
-      {currentTrack && <audio ref={audioRef} src={currentTrack.url} onEnded={handleAudioEnded} onTimeUpdate={() => setTrackProgress(audioRef.current.currentTime)} />}
+      {currentTrack && <audio ref={audioRef} src={getFullUrl(currentTrack.url)} onEnded={handleAudioEnded} onTimeUpdate={() => setTrackProgress(audioRef.current.currentTime)} />}
       <Sidebar 
         playlists={playlists} 
         onPlaylistCreated={handlePlaylistCreated} 

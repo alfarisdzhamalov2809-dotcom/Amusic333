@@ -77,12 +77,18 @@ function PlayerBar({ currentTrack, isPlaying, trackProgress, duration, onPlayPau
 
   const repeatInfo = getRepeatButtonInfo();
   
+  const getFullUrl = (url) => {
+    if (!url) return '';
+    if (url.startsWith('http')) return url;
+    return `https://amusic333-production.up.railway.app${url}`;
+  };
+  
   return (
     <footer className="player-bar">
       <div className="player-track-info">
         {currentTrack && (
           <>
-            <img src={currentTrack.cover} alt="обложка трека" className="player-cover-art" />
+            <img src={getFullUrl(currentTrack.cover)} alt="обложка трека" className="player-cover-art" />
             <div className="player-track-details">
               <h3>{currentTrack.title}</h3>
               <p>{currentTrack.artist}</p>

@@ -104,7 +104,7 @@ function SongsPage({
                 onClick={() => handleTrackClick(track._id)}
               >
                 <img
-                  src={track.cover}
+                  src={track.cover && track.cover.startsWith('http') ? track.cover : `https://amusic333-production.up.railway.app${track.cover}`}
                   alt="Обложка трека"
                   className="song-item-cover"
                 />

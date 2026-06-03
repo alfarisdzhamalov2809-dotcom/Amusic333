@@ -252,20 +252,23 @@ app.post('/api/upload', authMiddleware, upload.fields([{ name: 'track', maxCount
     const playsFromBody = parseInt(req.body.plays, 10);
     const playsValue = Number.isInteger(playsFromBody) && playsFromBody >= 0 ? playsFromBody : 0;
 
-    // Создаём новый трек с автоматическими данными
+    // Базовый URL для Railway (используется для фронтенда)
+    const baseURL = process.env.API_URL || 'https://amusic333-production.up.railway.app';
+
+    // Создаём новый трек с полными URL (для production Railway)
     const newTrack = new Track({
       _id: trackId,
       title: title.trim(),
       artist: artist && artist.trim() ? artist.trim() : 'Unknown Artist',
-      url: `/music/${filename}`,
-      cover: coverFile ? `/images/${coverFile.filename}` : '/images/default-cover.jpg',
+      url: `${baseURL}/music/${filename}`,
+      cover: coverFile ? `${baseURL}/images/${coverFile.filename}` : `${baseURL}/images/default-cover.jpg`,
       plays: playsValue,
       duration: duration, // Автоматически извлечённая длительность
     });
     
     await newTrack.save();
     
-    // Возвращаем трек с его ID
+    // Возвращаем трек с его ID (с полными URL)
     res.status(201).json({
       _id: newTrack._id,
       title: newTrack.title,
