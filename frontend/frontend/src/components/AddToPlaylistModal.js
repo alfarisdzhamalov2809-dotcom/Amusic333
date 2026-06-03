@@ -6,7 +6,7 @@ function AddToPlaylistModal({ playlists, trackId, onClose, onTrackAdded }) {
   const handleAddToPlaylist = async (playlistId) => {
     const token = localStorage.getItem('token');
     try {
-      const response = await fetch(`http://localhost:5000/api/playlists/${playlistId}/tracks`, {
+      const response = await fetch(`/api/playlists/${playlistId}/tracks`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

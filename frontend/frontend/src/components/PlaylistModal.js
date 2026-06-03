@@ -27,7 +27,7 @@ function PlaylistModal({ visible, onClose, onCreated }) {
     setLoading(true);
     const token = localStorage.getItem('token');
     try {
-      const response = await fetch('http://localhost:5000/api/playlists', {
+      const response = await fetch('/api/playlists', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify({ name }),

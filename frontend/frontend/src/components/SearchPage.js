@@ -14,7 +14,7 @@ function SearchPage({ allTracks, onTrackSelect }) {
     if (!searchTerm) return;
 
     try {
-      const response = await fetch(`http://localhost:5000/api/search?query=${searchTerm}`);
+      const response = await fetch(`/api/search?query=${searchTerm}`);
       if (!response.ok) {
         throw new Error('Ошибка сети при выполнении поиска');
       }

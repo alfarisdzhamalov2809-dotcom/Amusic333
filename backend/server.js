@@ -10,7 +10,7 @@ const { parseFile } = require('music-metadata');
 const authMiddleware = require('./middleware/auth.middleware');
 
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
@@ -251,8 +251,8 @@ app.post('/api/upload', authMiddleware, upload.fields([{ name: 'track', maxCount
       _id: trackId,
       title: title.trim(),
       artist: artist && artist.trim() ? artist.trim() : 'Unknown Artist',
-      url: `http://localhost:5000/music/${filename}`,
-      cover: coverFile ? `http://localhost:5000/images/${coverFile.filename}` : 'http://localhost:5000/images/default-cover.jpg',
+      url: `/music/${filename}`,
+      cover: coverFile ? `/images/${coverFile.filename}` : '/images/default-cover.jpg',
       plays: playsValue,
       duration: duration, // Автоматически извлечённая длительность
     });
@@ -311,6 +311,10 @@ app.delete('/api/tracks/:trackId', authMiddleware, async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Сервер запущен на порту ${PORT}`);
-});
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Сервер запущен на порту ${PORT}`);
+  });
+}
+
+module.exports = app;
