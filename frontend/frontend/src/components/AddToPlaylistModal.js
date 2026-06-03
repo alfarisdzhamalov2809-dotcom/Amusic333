@@ -1,12 +1,13 @@
 import React from 'react';
 import './AddToPlaylistModal.css';
 import { showToast } from '../utils/toastService';
+import { apiUrl } from '../api';
 
 function AddToPlaylistModal({ playlists, trackId, onClose, onTrackAdded }) {
   const handleAddToPlaylist = async (playlistId) => {
     const token = localStorage.getItem('token');
     try {
-      const response = await fetch(`/api/playlists/${playlistId}/tracks`, {
+      const response = await fetch(apiUrl(`/api/playlists/${playlistId}/tracks`), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

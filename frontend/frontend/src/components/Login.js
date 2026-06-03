@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import './Login.css';
+import { apiUrl } from '../api';
 
 function Login() {
   const [username, setUsername] = useState('');
@@ -14,7 +15,7 @@ function Login() {
     e.preventDefault();
     setMessage('');
     try {
-      const response = await fetch('/api/login', {
+      const response = await fetch(apiUrl('/api/login'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),

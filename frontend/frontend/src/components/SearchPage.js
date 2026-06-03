@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './SearchPage.css';
+import { apiUrl } from '../api';
 
 function SearchPage({ allTracks, onTrackSelect }) {
   const [searchTerm, setSearchTerm] = useState('');
@@ -14,7 +15,7 @@ function SearchPage({ allTracks, onTrackSelect }) {
     if (!searchTerm) return;
 
     try {
-      const response = await fetch(`/api/search?query=${searchTerm}`);
+      const response = await fetch(apiUrl(`/api/search?query=${encodeURIComponent(searchTerm)}`));
       if (!response.ok) {
         throw new Error('Ошибка сети при выполнении поиска');
       }

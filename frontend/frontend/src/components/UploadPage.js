@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; 
 import './UploadPage.css';
+import { apiUrl } from '../api';
 
 function UploadPage({ onTrackUploaded }) {
   const [title, setTitle] = useState('');
@@ -65,7 +66,7 @@ function UploadPage({ onTrackUploaded }) {
     setLoading(true);
 
     try {
-      const response = await fetch('/api/upload', {
+      const response = await fetch(apiUrl('/api/upload'), {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

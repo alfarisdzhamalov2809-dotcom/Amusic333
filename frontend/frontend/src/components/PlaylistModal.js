@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './PlaylistModal.css';
 import { IoMusicalNotes } from 'react-icons/io5';
 import { showToast } from '../utils/toastService';
+import { apiUrl } from '../api';
 
 function PlaylistModal({ visible, onClose, onCreated }) {
   const [name, setName] = useState('');
@@ -27,7 +28,7 @@ function PlaylistModal({ visible, onClose, onCreated }) {
     setLoading(true);
     const token = localStorage.getItem('token');
     try {
-      const response = await fetch('/api/playlists', {
+      const response = await fetch(apiUrl('/api/playlists'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify({ name }),

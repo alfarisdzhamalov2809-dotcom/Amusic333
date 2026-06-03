@@ -9,6 +9,7 @@ import UploadPage from './UploadPage';
 import '../App.css';
 import ToastManager from './ToastManager';
 import { showToast } from '../utils/toastService';
+import { apiUrl } from '../api';
 
 function Layout() {
   const [allTracks, setAllTracks] = useState(null);
@@ -27,7 +28,7 @@ function Layout() {
   const [shuffledIndices, setShuffledIndices] = useState([]);
 
   useEffect(() => {
-    fetch('/api/tracks')
+    fetch(apiUrl('/api/tracks'))
       .then(res => {
         if (!res.ok) throw new Error('Сетевой ответ был не в порядке');
         return res.json();
@@ -43,7 +44,7 @@ function Layout() {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
-      fetch('/api/playlists', {
+      fetch(apiUrl('/api/playlists'), {
         headers: { 'Authorization': `Bearer ${token}` }
       })
       .then(res => res.ok ? res.json() : Promise.reject('Не удалось загрузить плейлисты'))
@@ -61,7 +62,7 @@ function Layout() {
     if (playlistId) {
       // Берём полный плейлист с сервера, чтобы были все треки
       const token = localStorage.getItem('token');
-      fetch(`/api/playlists/${playlistId}`, {
+      fetch(apiUrl(`/api/playlists/${playlistId}`), {
         headers: { 'Authorization': `Bearer ${token}` }
       })
       .then(res => res.ok ? res.json() : Promise.reject('Не удалось загрузить плейлист'))
@@ -77,7 +78,7 @@ function Layout() {
   const handlePlaylistEdited = async (playlistId, newName) => {
     const token = localStorage.getItem('token');
     try {
-      const response = await fetch(`/api/playlists/${playlistId}`, {
+      const response = await fetch(apiUrl(`/api/playlists/${playlistId}`), {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify({ name: newName })
@@ -95,7 +96,7 @@ function Layout() {
   const handlePlaylistDeleted = async (playlistId) => {
     const token = localStorage.getItem('token');
     try {
-      const response = await fetch(`/api/playlists/${playlistId}`, {
+      const response = await fetch(apiUrl(`/api/playlists/${playlistId}`), {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -116,7 +117,7 @@ function Layout() {
   const handleTrackDeleted = async (trackId) => {
     const token = localStorage.getItem('token');
     try {
-      const response = await fetch(`/api/tracks/${trackId}`, {
+      const response = await fetch(apiUrl(`/api/tracks/${trackId}`), {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -132,7 +133,7 @@ function Layout() {
     if (!selectedPlaylist) return;
     const token = localStorage.getItem('token');
     try {
-      const response = await fetch(`/api/playlists/${selectedPlaylist._id}/tracks/${trackId}`, {
+      const response = await fetch(apiUrl(`/api/playlists/${selectedPlaylist._id}/tracks/${trackId}`), {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -153,7 +154,7 @@ function Layout() {
   useEffect(() => {
     if (playlistMatch?.params?.playlistId) {
       const token = localStorage.getItem('token');
-      fetch(`/api/playlists/${playlistMatch.params.playlistId}`, {
+      fetch(apiUrl(`/api/playlists/${playlistMatch.params.playlistId}`), {
         headers: { 'Authorization': `Bearer ${token}` }
       })
       .then(res => res.ok ? res.json() : Promise.reject('Не удалось загрузить плейлист'))
