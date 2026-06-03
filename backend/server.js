@@ -5,9 +5,12 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const multer = require('multer');
-const fs = require('fs');
-const { parseFile } = require('music-metadata');
+const { Readable } = require('stream');
+const { parseBuffer } = require('music-metadata');
+const { v2: cloudinary } = require('cloudinary');
 const authMiddleware = require('./middleware/auth.middleware');
+
+require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -49,20 +52,32 @@ const playlistSchema = new mongoose.Schema({
 });
 const Playlist = mongoose.model('Playlist', playlistSchema);
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    // Сохраняем треки в public/music, обложки в public/images
-    if (file.fieldname === 'cover') {
-      cb(null, 'public/images');
-    } else {
-      cb(null, 'public/music');
-    }
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + '-' + file.originalname.replace(/\s/g, '_'));
-  }
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
-const upload = multer({ storage: storage });
+
+const upload = multer({ storage: multer.memoryStorage() });
+
+const uploadToCloudinary = (buffer, folder, publicId, resourceType = 'auto') => {
+  return new Promise((resolve, reject) => {
+    const uploadStream = cloudinary.uploader.upload_stream(
+      {
+        folder,
+        public_id: publicId,
+        resource_type: resourceType,
+        overwrite: true,
+      },
+      (error, result) => {
+        if (error) return reject(error);
+        resolve(result);
+      }
+    );
+
+    Readable.from(buffer).pipe(uploadStream);
+  });
+};
 
 const trackMetadataMap = {
   'bakr очи': { plays: 1234567, duration: 240 },
@@ -228,47 +243,43 @@ app.post('/api/upload', authMiddleware, upload.fields([{ name: 'track', maxCount
     const trackFile = req.files && req.files['track'] ? req.files['track'][0] : null;
     const coverFile = req.files && req.files['cover'] ? req.files['cover'][0] : null;
     if (!trackFile) return res.status(400).json({ message: 'Аудиофайл не найден' });
-    const { filename, path: filePath } = trackFile;
-    
-    // Если название не заполнено, берём из имени файла
+
+    const originalTrackName = trackFile.originalname.replace(/\.[^/.]+$/, '').replace(/^\d+-/, '').replace(/_/g, ' ');
     if (!title || title.trim() === '') {
-      title = filename.replace(/\.[^/.]+$/, '').replace(/^\d+-/, '').replace(/_/g, ' ');
+      title = originalTrackName;
     }
-    
-    // Извлекаем длительность из MP3 файла
+
     let duration = 0;
     try {
-      const metadata = await parseFile(filePath);
+      const metadata = await parseBuffer(trackFile.buffer, trackFile.mimetype);
       duration = Math.round(metadata.format.duration || 0);
     } catch (metadataError) {
       console.warn('Не удалось извлечь метаданные:', metadataError.message);
-      // Продолжаем без длительности
     }
-    
-    // Генерируем уникальный trackId (MongoDB ObjectId)
-    const trackId = new mongoose.Types.ObjectId();
-    
-    // Пробуем прочитать plays из тела формы (если пусто, ставим 0)
-    const playsFromBody = parseInt(req.body.plays, 10);
-    const playsValue = Number.isInteger(playsFromBody) && playsFromBody >= 0 ? playsFromBody : 0;
 
-    // Базовый URL для Railway (используется для фронтенда)
+    const trackId = new mongoose.Types.ObjectId();
+    const playCount = parseInt(req.body.plays, 10);
+    const playsValue = Number.isInteger(playCount) && playCount >= 0 ? playCount : 0;
+
+    const trackResult = await uploadToCloudinary(trackFile.buffer, 'music', trackId.toString(), 'video');
+    const coverResult = coverFile
+      ? await uploadToCloudinary(coverFile.buffer, 'images', `cover-${trackId.toString()}`, 'image')
+      : null;
+
     const baseURL = process.env.API_URL || 'https://amusic333-production.up.railway.app';
 
-    // Создаём новый трек с полными URL (для production Railway)
     const newTrack = new Track({
       _id: trackId,
       title: title.trim(),
       artist: artist && artist.trim() ? artist.trim() : 'Unknown Artist',
-      url: `${baseURL}/music/${filename}`,
-      cover: coverFile ? `${baseURL}/images/${coverFile.filename}` : `${baseURL}/images/default-cover.jpg`,
+      url: trackResult.secure_url,
+      cover: coverResult ? coverResult.secure_url : `${baseURL}/images/default-cover.jpg`,
       plays: playsValue,
-      duration: duration, // Автоматически извлечённая длительность
+      duration: duration,
     });
-    
+
     await newTrack.save();
-    
-    // Возвращаем трек с его ID (с полными URL)
+
     res.status(201).json({
       _id: newTrack._id,
       title: newTrack.title,
