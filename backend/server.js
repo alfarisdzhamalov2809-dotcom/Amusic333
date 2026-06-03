@@ -10,9 +10,13 @@ const { parseFile } = require('music-metadata');
 const authMiddleware = require('./middleware/auth.middleware');
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
+const FRONTEND_URL = process.env.FRONTEND_URL || 'https://your-vercel-domain.vercel.app';
+const JWT_SECRET = process.env.JWT_SECRET || 'очень секретный ключ который должен быть длинным и случайным';
 
-app.use(cors());
+app.use(cors({
+  origin: [FRONTEND_URL, 'http://localhost:3000']
+}));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -92,6 +96,7 @@ app.post('/api/register', async (req, res) => {
     await newUser.save();
     res.status(201).json({ message: 'Пользователь успешно зарегистрирован' });
   } catch (error) {
+    console.error('Register error:', error);
     res.status(500).json({ message: 'Что-то пошло не так, попробуйте снова' });
   }
 });
@@ -109,11 +114,12 @@ app.post('/api/login', async (req, res) => {
     }
     const token = jwt.sign(
       { userId: user.id },
-      'очень секретный ключ который должен быть длинным и случайным',
+      JWT_SECRET,
       { expiresIn: '1h' }
     );
     res.json({ token, userId: user.id, username: user.username });
   } catch (error) {
+    console.error('Login error:', error);
     res.status(500).json({ message: 'Что-то пошло не так, попробуйте снова' });
   }
 });
