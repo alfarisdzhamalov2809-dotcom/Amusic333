@@ -184,10 +184,29 @@ function Layout() {
     setCurrentTrackIndex(index);
     setIsPlaying(true);
     
-    // Записываем прослушивание трека
+    // Записываем прослушивание трека и обновляем счётчик локально
     fetch(apiUrl(`/api/tracks/${track._id}/play`), {
       method: 'POST'
-    }).catch(err => console.error('Ошибка при записи прослушивания:', err));
+    })
+    .then(res => res.json())
+    .then(data => {
+      // Обновляем счётчик прослушиваний в allTracks
+      if (allTracks) {
+        setAllTracks(allTracks.map(t => 
+          t._id === track._id ? { ...t, plays: data.plays } : t
+        ));
+      }
+      // Обновляем счётчик в selectedPlaylist если он выбран
+      if (selectedPlaylist) {
+        setSelectedPlaylist(prev => ({
+          ...prev,
+          tracks: prev.tracks.map(t => 
+            t._id === track._id ? { ...t, plays: data.plays } : t
+          )
+        }));
+      }
+    })
+    .catch(err => console.error('Ошибка при записи прослушивания:', err));
   };
 
   useEffect(() => {

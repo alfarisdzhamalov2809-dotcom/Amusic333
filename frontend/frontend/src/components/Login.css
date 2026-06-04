@@ -57,15 +57,17 @@
   margin: 0 auto;
   width: 100%;
   padding: 60px 60px;
-  gap: 80px;
+  gap: 60px;
   align-items: center;
+  justify-content: center;
 }
 
 .landing-left {
-  flex: 1;
+  flex: 0 1 50%;
   display: flex;
   flex-direction: column;
   gap: 30px;
+  min-width: 0;
 }
 
 .landing-title {
@@ -75,6 +77,8 @@
   margin: 0;
   color: white;
   letter-spacing: -1px;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .landing-title .accent {
@@ -86,7 +90,7 @@
   line-height: 1.6;
   color: rgba(255, 255, 255, 0.85);
   margin: 0;
-  max-width: 500px;
+  flex-shrink: 0;
 }
 
 .landing-features {
@@ -94,6 +98,7 @@
   flex-direction: column;
   gap: 20px;
   margin-top: 20px;
+  flex-shrink: 0;
 }
 
 .feature-item {
@@ -107,13 +112,15 @@
 .feature-icon {
   font-size: 24px;
   min-width: 30px;
+  flex-shrink: 0;
 }
 
 .landing-right {
-  flex: 1;
+  flex: 0 1 50%;
   display: flex;
   justify-content: center;
   align-items: center;
+  min-width: 0;
 }
 
 /* Auth Form */
