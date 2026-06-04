@@ -10,9 +10,44 @@ const formatDuration = (seconds) => {
     return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
 };
 
-function MainContent({ tracks, playlists = [], onTrackSelect, currentTrackIndex, onTrackAdded, playlistTitle, onTrackRemoved }) {
+function MainContent({ tracks, playlists = [], onTrackSelect, currentTrackIndex, onTrackAdded, playlistTitle, onTrackRemoved, loading = false }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTrackId, setSelectedTrackId] = useState(null);
+
+  if (loading) {
+    return (
+      <main className="main-content">
+        <div className="playlist-header skeleton-header">
+          <div className="playlist-details">
+            <span className="playlist-type">Плейлист</span>
+            <h1 className="skeleton-title">Загрузка...</h1>
+            <p className="playlist-meta skeleton-text">Пожалуйста, подождите</p>
+          </div>
+        </div>
+        <div className="track-list-container">
+          <table className="track-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Название</th>
+                <th>Прослушивания</th>
+                <th>Время</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[...Array(5)].map((_, index) => (
+                <tr key={index} className="skeleton-row">
+                  <td colSpan="4">
+                    <div className="skeleton-cell" />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </main>
+    );
+  }
 
   // Иногда просто смотрим, что пришло в tracks
   React.useEffect(() => {

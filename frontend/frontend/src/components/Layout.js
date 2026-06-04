@@ -14,6 +14,7 @@ function Layout() {
   const [allTracks, setAllTracks] = useState(null);
   const [playlists, setPlaylists] = useState([]);
   const [selectedPlaylist, setSelectedPlaylist] = useState(null);
+  const [playlistLoading, setPlaylistLoading] = useState(false);
   const [currentTrackIndex, setCurrentTrackIndex] = useState(null);
   const [currentTrackId, setCurrentTrackId] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -153,6 +154,8 @@ function Layout() {
   useEffect(() => {
     if (playlistMatch?.params?.playlistId) {
       const token = localStorage.getItem('token');
+      setPlaylistLoading(true);
+      setSelectedPlaylist(null);
       fetch(apiUrl(`/api/playlists/${playlistMatch.params.playlistId}`), {
         headers: { 'Authorization': `Bearer ${token}` }
       })
@@ -160,20 +163,27 @@ function Layout() {
       .then(playlist => {
         setSelectedPlaylist(playlist);
       })
-      .catch(error => console.error(error));
+      .catch(error => {
+        console.error(error);
+        toast.error('⚠️ Не удалось загрузить плейлист');
+      })
+      .finally(() => setPlaylistLoading(false));
     }
   }, [playlistMatch?.params?.playlistId]);
 
   useEffect(() => {
     if (!location.pathname.startsWith('/playlist/')) {
       setSelectedPlaylist(null);
+      setPlaylistLoading(false);
     }
   }, [location.pathname]);
 
-  const tracksToDisplay = useMemo(
-    () => (selectedPlaylist ? selectedPlaylist.tracks : allTracks) || [],
-    [selectedPlaylist, allTracks]
-  );
+  const tracksToDisplay = useMemo(() => {
+    if (playlistMatch?.params?.playlistId) {
+      return selectedPlaylist?.tracks ?? [];
+    }
+    return allTracks || [];
+  }, [selectedPlaylist, allTracks, playlistMatch?.params?.playlistId]);
   const currentTrack = (allTracks || []).find(track => track._id === currentTrackId) || tracksToDisplay[currentTrackIndex];
 
   const selectTrack = (index) => {
@@ -325,7 +335,7 @@ function Layout() {
       
       <Routes>
         <Route path="/" element={<MainContent tracks={tracksToDisplay} playlists={playlists} currentTrackIndex={currentTrackIndex} onTrackSelect={selectTrack} onTrackAdded={handleTrackAddedToPlaylist} playlistTitle={selectedPlaylist?.name} onTrackRemoved={handleTrackRemoved} />} />
-        <Route path="/playlist/:playlistId" element={<MainContent tracks={tracksToDisplay} playlists={playlists} currentTrackIndex={currentTrackIndex} onTrackSelect={selectTrack} onTrackAdded={handleTrackAddedToPlaylist} playlistTitle={selectedPlaylist?.name} onTrackRemoved={handleTrackRemoved} />} />
+        <Route path="/playlist/:playlistId" element={<MainContent tracks={tracksToDisplay} playlists={playlists} currentTrackIndex={currentTrackIndex} onTrackSelect={selectTrack} onTrackAdded={handleTrackAddedToPlaylist} playlistTitle={selectedPlaylist?.name} onTrackRemoved={handleTrackRemoved} loading={playlistLoading} />} />
         <Route path="/search" element={<SearchPage allTracks={allTracks} onTrackSelect={selectTrack} />} />
         <Route 
           path="/songs" 
