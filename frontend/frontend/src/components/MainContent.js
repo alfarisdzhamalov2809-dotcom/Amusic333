@@ -23,13 +23,6 @@ function MainContent({ tracks, playlists = [], onTrackSelect, currentTrackIndex,
   if (loading) {
     return (
       <main className="main-content">
-        <div className="playlist-header skeleton-header">
-          <div className="playlist-details">
-            <span className="playlist-type">Плейлист</span>
-            <h1 className="skeleton-title">Загрузка...</h1>
-            <p className="playlist-meta skeleton-text">Пожалуйста, подождите</p>
-          </div>
-        </div>
         <div className="track-list-container">
           <table className="track-table">
             <thead>
