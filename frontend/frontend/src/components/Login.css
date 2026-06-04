@@ -56,10 +56,10 @@
   max-width: 1400px;
   margin: 0 auto;
   width: 100%;
-  padding: 60px 60px;
-  gap: 60px;
+  padding: 60px 60px 60px 40px;
+  gap: 80px;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .landing-left {
@@ -68,6 +68,10 @@
   flex-direction: column;
   gap: 30px;
   min-width: 0;
+  margin-left: 0;
+  padding-left: 0;
+  align-self: flex-start;
+  text-align: left;
 }
 
 .landing-title {
