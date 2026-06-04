@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { AuthContext } from '../context/AuthContext';
 import './Login.css';
 import { apiUrl } from '../api';
@@ -24,10 +25,13 @@ function Login() {
       if (!response.ok) {
         throw new Error(data.message || 'Что-то пошло не так');
       }
-      login(data.token);
+      login(data.token, username);
+      toast.success(`Добро пожаловать, ${username}!`);
       navigate('/');
     } catch (error) {
-      setMessage(error.message);
+      const errorMessage = error.message || 'Неверный логин или пароль';
+      setMessage(errorMessage);
+      toast.error('Неверный логин или пароль');
     }
   };
 
