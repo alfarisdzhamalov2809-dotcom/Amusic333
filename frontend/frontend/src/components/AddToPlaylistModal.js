@@ -1,11 +1,12 @@
 import React from 'react';
+import { toast } from 'react-toastify';
 import './AddToPlaylistModal.css';
-import { showToast } from '../utils/toastService';
 import { apiUrl } from '../api';
 
 function AddToPlaylistModal({ playlists, trackId, onClose, onTrackAdded }) {
   const handleAddToPlaylist = async (playlistId) => {
     const token = localStorage.getItem('token');
+    const playlistName = playlists.find(p => p._id === playlistId)?.name || 'плейлист';
     try {
       const response = await fetch(apiUrl(`/api/playlists/${playlistId}/tracks`), {
         method: 'POST',
@@ -19,10 +20,11 @@ function AddToPlaylistModal({ playlists, trackId, onClose, onTrackAdded }) {
       if (!response.ok) {
         throw new Error(updatedPlaylist.message || 'Could not add track to playlist');
       }
+      toast.success(`✅ Трек добавлен в "${playlistName}"`);
       onTrackAdded(updatedPlaylist); 
       onClose(); 
     } catch (error) {
-      showToast(error.message || 'Ошибка');
+      toast.error(error.message || 'Ошибка при добавлении трека');
     }
   };
 
