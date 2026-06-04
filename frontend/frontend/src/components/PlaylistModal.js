@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import './PlaylistModal.css';
 import { IoMusicalNotes } from 'react-icons/io5';
-import { showToast } from '../utils/toastService';
 import { apiUrl } from '../api';
 
 function PlaylistModal({ visible, onClose, onCreated }) {
@@ -35,10 +35,11 @@ function PlaylistModal({ visible, onClose, onCreated }) {
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.message || 'Не удалось создать плейлист');
+      toast.success('✨ ' + (data.name || 'Плейлист') + ' создан успешно!');
       onCreated && onCreated(data);
       onClose();
     } catch (err) {
-      showToast(err.message || 'Ошибка');
+      toast.error('❌ ' + (err.message || 'Ошибка при создании'));
     } finally {
       setLoading(false);
     }

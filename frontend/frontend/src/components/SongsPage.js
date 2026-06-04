@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
+import { toast } from 'react-toastify';
 import './SongsPage.css';
 import AddToPlaylistModal from './AddToPlaylistModal';
 import { IoTrash } from 'react-icons/io5';
 import ConfirmModal from './ConfirmModal';
-import { showToast } from '../utils/toastService';
 
 function SongsPage({
   allTracks,
@@ -72,7 +72,7 @@ function SongsPage({
   const handleConfirmDelete = () => {
     if (!confirmTarget) return;
     onTrackDeleted(confirmTarget.id);
-    showToast('Трек удален из плейлиста');
+    toast.success('🗑️ Трек удален из плейлиста');
     setConfirmVisible(false);
     setConfirmTarget(null);
   };

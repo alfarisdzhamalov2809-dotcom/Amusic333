@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Routes, Route, useMatch, useLocation } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import Sidebar from './Sidebar';
 import MainContent from './MainContent';
 import PlayerBar from './PlayerBar';
@@ -7,8 +8,6 @@ import SearchPage from './SearchPage';
 import SongsPage from './SongsPage';
 import UploadPage from './UploadPage';
 import '../App.css';
-import ToastManager from './ToastManager';
-import { showToast } from '../utils/toastService';
 import { apiUrl } from '../api';
 
 function Layout() {
@@ -37,7 +36,7 @@ function Layout() {
       .catch(err => {
         console.error("Ошибка при получении треков:", err);
         setAllTracks([]);
-        showToast('Не удалось загрузить треки');
+        toast.error('⚠️ Не удалось загрузить треки');
       });
   }, []);
 
@@ -49,7 +48,7 @@ function Layout() {
       })
       .then(res => res.ok ? res.json() : Promise.reject('Не удалось загрузить плейлисты'))
       .then(setPlaylists)
-      .catch(error => { console.error(error); showToast('Не удалось загрузить плейлисты'); });
+      .catch(error => { console.error(error); toast.error('⚠️ Не удалось загрузить плейлисты'); });
     }
   }, []);
 
@@ -87,9 +86,9 @@ function Layout() {
       if (!response.ok) throw new Error(updatedPlaylist.message);
       setPlaylists(playlists.map(p => p._id === playlistId ? updatedPlaylist : p));
       if (selectedPlaylist?._id === playlistId) setSelectedPlaylist(updatedPlaylist);
-      showToast('Название плейлиста изменено');
+      toast.success('✏️ Название плейлиста изменено');
     } catch (error) {
-      showToast(error.message || 'Ошибка при изменении названия');
+      toast.error('❌ ' + (error.message || 'Ошибка при изменении названия'));
     }
   };
 
@@ -105,9 +104,9 @@ function Layout() {
       if (selectedPlaylist?._id === playlistId) {
         setSelectedPlaylist(null);
       }
-      showToast('Плейлист удален');
+      toast.success('🗑️ Плейлист удален');
     } catch (error) {
-      showToast(error.message || 'Ошибка при удалении плейлиста');
+      toast.error('❌ ' + (error.message || 'Ошибка при удалении плейлиста'));
     }
   };
   const handleTrackUploaded = (newTrack) => {
@@ -121,11 +120,11 @@ function Layout() {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
-      if (!response.ok) throw new Error('Нквозможно удалить песню');
+      if (!response.ok) throw new Error('Невозможно удалить песню');
       setAllTracks(allTracks.filter(t => t._id !== trackId));
-      showToast('Трек удален');
+      toast.success('🗑️ Трек удален');
     } catch (error) {
-      showToast(error.message || 'Ошибка при удалении трека');
+      toast.error('❌ ' + (error.message || 'Ошибка при удалении трека'));
     }
   };
 
@@ -142,9 +141,9 @@ function Layout() {
       
       setPlaylists(playlists.map(p => p._id === updatedPlaylist._id ? updatedPlaylist : p));
       setSelectedPlaylist(updatedPlaylist);
-      showToast('Трек удален из плейлиста');
+      toast.success('🗑️ Трек удален из плейлиста');
     } catch (error) {
-      showToast(error.message || 'Не удалось удалить трек из плейлиста');
+      toast.error('❌ ' + (error.message || 'Не удалось удалить трек из плейлиста'));
     }
   };
 
@@ -314,7 +313,6 @@ function Layout() {
 
   return (
     <>
-      <ToastManager />
       {currentTrack && <audio ref={audioRef} src={getFullUrl(currentTrack.url)} onEnded={handleAudioEnded} onTimeUpdate={() => setTrackProgress(audioRef.current.currentTime)} />}
       <Sidebar 
         playlists={playlists} 

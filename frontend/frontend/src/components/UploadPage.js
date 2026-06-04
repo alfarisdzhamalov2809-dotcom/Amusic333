@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import './UploadPage.css';
 import { apiUrl } from '../api';
 
@@ -93,6 +94,7 @@ function UploadPage({ onTrackUploaded }) {
       
       onTrackUploaded(trackInfo);
 
+      toast.success(`📁 Трек "${data.title}" успешно загружен!`);
       setMessage(`✅ Трек "${data.title}" успешно загружен и обработан!\nДлительность: ${formatDuration(data.duration)} • ID: ${data._id}`);
       
       // Сбрасываем поля
@@ -105,6 +107,7 @@ function UploadPage({ onTrackUploaded }) {
       setTimeout(() => navigate('/songs'), 2000);
 
     } catch (error) {
+      toast.error(`❌ Ошибка при загрузке: ${error.message}`);
       setMessage(`❌ Ошибка: ${error.message}`);
       console.error(error);
     } finally {
