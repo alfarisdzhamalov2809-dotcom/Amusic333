@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import './AddToPlaylistModal.css';
 import { apiUrl } from '../api';
 
 function AddToPlaylistModal({ playlists, trackId, onClose, onTrackAdded }) {
+  const [addingPlaylistId, setAddingPlaylistId] = useState(null);
+
   const handleAddToPlaylist = async (playlistId) => {
+    if (addingPlaylistId) return;
+    setAddingPlaylistId(playlistId);
     const token = localStorage.getItem('token');
     const playlistName = playlists.find(p => p._id === playlistId)?.name || 'плейлист';
     try {
@@ -20,11 +24,13 @@ function AddToPlaylistModal({ playlists, trackId, onClose, onTrackAdded }) {
       if (!response.ok) {
         throw new Error(updatedPlaylist.message || 'Could not add track to playlist');
       }
-      toast.success(`✅ Трек добавлен в "${playlistName}"`);
-      onTrackAdded(updatedPlaylist); 
-      onClose(); 
+      toast.success('Трек добавлен в плейлист!');
+      onTrackAdded(updatedPlaylist);
+      onClose();
     } catch (error) {
-      toast.error(error.message || 'Ошибка при добавлении трека');
+      toast.error('Не удалось добавить трек');
+    } finally {
+      setAddingPlaylistId(null);
     }
   };
 
@@ -34,8 +40,12 @@ function AddToPlaylistModal({ playlists, trackId, onClose, onTrackAdded }) {
         <h3>Добавить в плейлист</h3>
         <ul className="modal-playlist-list">
           {playlists.map(playlist => (
-            <li key={playlist._id} onClick={() => handleAddToPlaylist(playlist._id)}>
-              {playlist.name}
+            <li
+              key={playlist._id}
+              className={addingPlaylistId === playlist._id ? 'adding' : ''}
+              onClick={() => handleAddToPlaylist(playlist._id)}
+            >
+              {addingPlaylistId === playlist._id ? 'Добавление...' : playlist.name}
             </li>
           ))}
         </ul>
