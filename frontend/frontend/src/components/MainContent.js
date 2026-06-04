@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './MainContent.css';
 import AddToPlaylistModal from './AddToPlaylistModal';
 import { IoTrash } from 'react-icons/io5';
@@ -13,6 +13,12 @@ const formatDuration = (seconds) => {
 function MainContent({ tracks, playlists = [], onTrackSelect, currentTrackIndex, onTrackAdded, playlistTitle, onTrackRemoved, loading = false }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTrackId, setSelectedTrackId] = useState(null);
+
+  useEffect(() => {
+    if (tracks.length > 0) {
+      console.log('Tracks data:', tracks[0]);
+    }
+  }, [tracks]);
 
   if (loading) {
     return (
@@ -49,12 +55,7 @@ function MainContent({ tracks, playlists = [], onTrackSelect, currentTrackIndex,
     );
   }
 
-  // Иногда просто смотрим, что пришло в tracks
-  React.useEffect(() => {
-    if (tracks.length > 0) {
-      console.log('Tracks data:', tracks[0]);
-    }
-  }, [tracks]);
+  // (logs above moved) — no hooks after early return to satisfy Rules of Hooks
 
   const handleOpenModal = (trackId) => {
     setSelectedTrackId(trackId);
