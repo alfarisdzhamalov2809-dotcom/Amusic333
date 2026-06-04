@@ -32,35 +32,81 @@ function Login() {
   };
 
   return (
-    <div className="auth-container">
-      <form className="auth-form" onSubmit={handleSubmit}>
-        <h2>Вход</h2>
-        <div className="form-group">
-          <label htmlFor="username">Имя пользователя</label>
-          <input
-            type="text"
-            id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
+    <div className="landing-container">
+      {/* Header */}
+      <header className="landing-header">
+        <div className="header-logo">
+          <span className="logo-icon">⊕</span>
+          <span className="logo-text">AMusic</span>
         </div>
-        <div className="form-group">
-          <label htmlFor="password">Пароль</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+        <div className="header-auth-text">
+          🔒 Необходима авторизация
         </div>
-        <button type="submit">Войти</button>
-        {message && <p className="message">{message}</p>}
-        <p className="switch-form-text">
-          Нет аккаунта? <Link to="/register">Зарегистрироваться</Link>
-        </p>
-      </form>
+      </header>
+
+      {/* Main Content */}
+      <div className="landing-content">
+        {/* Left Column */}
+        <div className="landing-left">
+          <h1 className="landing-title">
+            Твоя музыка. <span className="accent">Твои правила.</span>
+          </h1>
+          <p className="landing-description">
+            AMusic — это место, где ты управляешь своей музыкой. Слушай любимые треки, создавай плейлисты, загружай свои песни для личного использования без ограничений и наслаждайся качественным звуком.
+          </p>
+          <div className="landing-features">
+            <div className="feature-item">
+              <span className="feature-icon">☁️</span>
+              <span>Загружай свои песни для личного использования без ограничений</span>
+            </div>
+            <div className="feature-item">
+              <span className="feature-icon">🚫</span>
+              <span>Бесплатное использование без рекламы</span>
+            </div>
+            <div className="feature-item">
+              <span className="feature-icon">⚡</span>
+              <span>Высокое качество звука</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Column - Login Form */}
+        <div className="landing-right">
+          <form className="auth-form" onSubmit={handleSubmit}>
+            <h2>Вход</h2>
+            <div className="form-group">
+              <label htmlFor="username">Имя пользователя</label>
+              <input
+                type="text"
+                id="username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="password">Пароль</label>
+              <input
+                type="password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+            <button type="submit">Войти</button>
+            {message && <p className="message">{message}</p>}
+            <p className="switch-form-text">
+              Нет аккаунта? <Link to="/register">Зарегистрироваться</Link>
+            </p>
+          </form>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <footer className="landing-footer">
+        © 2026 <span className="accent">AMusic</span>. Все права защищены.
+      </footer>
     </div>
   );
 }
