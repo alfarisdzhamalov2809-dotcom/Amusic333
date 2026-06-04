@@ -34,7 +34,7 @@ const trackSchema = new mongoose.Schema({
   artist: String,
   url: String,
   cover: String,
-  plays: Number,
+  plays: { type: Number, default: 0 },
   duration: Number,
 });
 const Track = mongoose.model('Track', trackSchema);
@@ -93,6 +93,23 @@ app.get('/api/tracks', async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: "Ошибка при получении треков", error });
     }
+});
+
+app.post('/api/tracks/:id/play', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const track = await Track.findByIdAndUpdate(
+      id,
+      { $inc: { plays: 1 } },
+      { new: true }
+    );
+    if (!track) {
+      return res.status(404).json({ message: 'Трек не найден' });
+    }
+    res.json({ message: 'Прослушивание записано', plays: track.plays });
+  } catch (error) {
+    res.status(500).json({ message: 'Ошибка при записи прослушивания', error });
+  }
 });
 
 app.post('/api/register', async (req, res) => {

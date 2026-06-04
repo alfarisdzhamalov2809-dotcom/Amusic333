@@ -183,6 +183,11 @@ function Layout() {
     setCurrentTrackId(track._id);
     setCurrentTrackIndex(index);
     setIsPlaying(true);
+    
+    // Записываем прослушивание трека
+    fetch(apiUrl(`/api/tracks/${track._id}/play`), {
+      method: 'POST'
+    }).catch(err => console.error('Ошибка при записи прослушивания:', err));
   };
 
   useEffect(() => {
