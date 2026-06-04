@@ -73,12 +73,29 @@
   font-weight: 500;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 12px;
   width: 100%;
   box-sizing: border-box;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.modal-playlist-list li.selected {
+  background-color: rgba(29, 185, 84, 0.18);
+  border-color: #1db954;
+  color: white;
+}
+
+.modal-playlist-list li.selected .playlist-name {
+  font-weight: 700;
+}
+
+.modal-playlist-list li.selected::after {
+  content: '✔';
+  color: #1db954;
+  font-size: 18px;
 }
 
 .modal-playlist-list li::before {
@@ -107,6 +124,41 @@
   transition: all 0.3s ease;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+}
+
+.modal-close-btn:hover {
+  color: white;
+  border-color: rgba(255, 255, 255, 0.4);
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.modal-close-btn:active {
+  transform: scale(0.98);
+}
+
+.modal-confirm-btn {
+  background-color: #1db954;
+  border: none;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 25px;
+  cursor: pointer;
+  margin-top: 12px;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.modal-confirm-btn:hover:not(:disabled) {
+  background-color: #1ed760;
+}
+
+.modal-confirm-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .modal-close-btn:hover {

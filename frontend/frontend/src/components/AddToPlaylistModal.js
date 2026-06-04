@@ -4,15 +4,20 @@ import './AddToPlaylistModal.css';
 import { apiUrl } from '../api';
 
 function AddToPlaylistModal({ playlists, trackId, onClose, onTrackAdded }) {
-  const [addingPlaylistId, setAddingPlaylistId] = useState(null);
+  const [selectedPlaylistId, setSelectedPlaylistId] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleAddToPlaylist = async (playlistId) => {
-    if (addingPlaylistId) return;
-    setAddingPlaylistId(playlistId);
+  const handlePlaylistSelect = (playlistId) => {
+    if (isSubmitting) return;
+    setSelectedPlaylistId(playlistId);
+  };
+
+  const handleConfirmAdd = async () => {
+    if (!selectedPlaylistId || isSubmitting) return;
+    setIsSubmitting(true);
     const token = localStorage.getItem('token');
-    const playlistName = playlists.find(p => p._id === playlistId)?.name || 'плейлист';
     try {
-      const response = await fetch(apiUrl(`/api/playlists/${playlistId}/tracks`), {
+      const response = await fetch(apiUrl(`/api/playlists/${selectedPlaylistId}/tracks`), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -22,15 +27,15 @@ function AddToPlaylistModal({ playlists, trackId, onClose, onTrackAdded }) {
       });
       const updatedPlaylist = await response.json();
       if (!response.ok) {
-        throw new Error(updatedPlaylist.message || 'Could not add track to playlist');
+        throw new Error(updatedPlaylist.message || 'Ошибка при добавлении');
       }
-      toast.success('Трек добавлен в плейлист!');
+      toast.success('Трек добавлен!');
       onTrackAdded(updatedPlaylist);
       onClose();
     } catch (error) {
-      toast.error('Не удалось добавить трек');
+      toast.error('Ошибка при добавлении');
     } finally {
-      setAddingPlaylistId(null);
+      setIsSubmitting(false);
     }
   };
 
@@ -42,13 +47,22 @@ function AddToPlaylistModal({ playlists, trackId, onClose, onTrackAdded }) {
           {playlists.map(playlist => (
             <li
               key={playlist._id}
-              className={addingPlaylistId === playlist._id ? 'adding' : ''}
-              onClick={() => handleAddToPlaylist(playlist._id)}
+              className={selectedPlaylistId === playlist._id ? 'selected' : ''}
+              onClick={() => handlePlaylistSelect(playlist._id)}
             >
-              {addingPlaylistId === playlist._id ? 'Добавление...' : playlist.name}
+              <span className="playlist-name">{playlist.name}</span>
             </li>
           ))}
         </ul>
+        {selectedPlaylistId && (
+          <button
+            className="modal-confirm-btn"
+            onClick={handleConfirmAdd}
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? 'Добавление...' : 'ПОДТВЕРДИТЬ'}
+          </button>
+        )}
         <button className="modal-close-btn" onClick={onClose}>Закрыть</button>
       </div>
     </div>
