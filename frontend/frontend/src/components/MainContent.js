@@ -31,7 +31,7 @@ function MainContent({ tracks, playlists = [], onTrackSelect, currentTrackIndex,
     setSelectedTrackId(null);
   };
 
-  const playlistCover = playlists.find(p => p.name === playlistTitle)?.tracks[0]?.cover || '/images/default-cover.jpg';
+  const playlistCover = playlists.find(p => p.name === playlistTitle)?.tracks[0]?.cover || 'https://res.cloudinary.com/ditexyjne/image/upload/v1780577006/images/default-cover.jpg';
   const totalDurationSeconds = tracks.reduce((acc, track) => acc + (track.duration || 0), 0);
   return (
     <main className="main-content">
