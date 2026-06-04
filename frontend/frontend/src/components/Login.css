@@ -53,25 +53,26 @@
 .landing-content {
   display: flex;
   flex: 1;
-  max-width: 1400px;
-  margin: 0 auto;
+  max-width: 100%;
+  margin: 0;
   width: 100%;
-  padding: 60px 60px 60px 40px;
-  gap: 80px;
+  padding: 60px 0 60px 80px;
+  gap: 100px;
   align-items: center;
   justify-content: flex-start;
 }
 
 .landing-left {
-  flex: 0 1 50%;
+  flex: 0 0 auto;
   display: flex;
   flex-direction: column;
   gap: 30px;
   min-width: 0;
   margin-left: 0;
   padding-left: 0;
-  align-self: flex-start;
+  align-self: center;
   text-align: left;
+  max-width: 500px;
 }
 
 .landing-title {
