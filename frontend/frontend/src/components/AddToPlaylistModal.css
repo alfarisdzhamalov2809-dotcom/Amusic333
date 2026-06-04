@@ -56,6 +56,8 @@
   gap: 12px;
   max-height: 400px;
   overflow-y: auto;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .modal-playlist-list li {
@@ -70,6 +72,11 @@
   display: flex;
   align-items: center;
   gap: 12px;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .modal-playlist-list li::before {
