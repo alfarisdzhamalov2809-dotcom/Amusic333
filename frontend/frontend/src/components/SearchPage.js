@@ -57,7 +57,12 @@ function SearchPage({ allTracks, onTrackSelect }) {
         {message && <p className="search-message">{message}</p>}
         {results.map(track => (
           <div key={track._id} className="search-result-item" onClick={() => handleTrackClick(track._id)}>
-            <img src={track.cover && track.cover.startsWith('http') ? track.cover : `https://amusic333-production.up.railway.app${track.cover}`} alt="Обложка трека" className="search-result-cover" />
+            <img
+              src={track.cover && track.cover.startsWith('http') ? track.cover : `https://amusic333-production.up.railway.app${track.cover}`}
+              alt="Обложка трека"
+              className="search-result-cover"
+              onError={(e) => { e.target.src = 'https://res.cloudinary.com/ditexyjne/image/upload/v1780577006/images/default-cover.jpg'; }}
+            />
             <div className="search-result-details">
               <span className="search-result-title">{track.title}</span>
               <span className="search-result-artist">{track.artist}</span>

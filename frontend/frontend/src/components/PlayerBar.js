@@ -88,7 +88,12 @@ function PlayerBar({ currentTrack, isPlaying, trackProgress, duration, onPlayPau
       <div className="player-track-info">
         {currentTrack && (
           <>
-            <img src={getFullUrl(currentTrack.cover)} alt="обложка трека" className="player-cover-art" />
+            <img
+              src={getFullUrl(currentTrack.cover)}
+              alt="обложка трека"
+              className="player-cover-art"
+              onError={(e) => { e.target.src = 'https://res.cloudinary.com/ditexyjne/image/upload/v1780577006/images/default-cover.jpg'; }}
+            />
             <div className="player-track-details">
               <h3>{currentTrack.title}</h3>
               <p>{currentTrack.artist}</p>

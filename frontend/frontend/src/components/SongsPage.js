@@ -107,6 +107,7 @@ function SongsPage({
                   src={track.cover && track.cover.startsWith('http') ? track.cover : `https://amusic333-production.up.railway.app${track.cover}`}
                   alt="Обложка трека"
                   className="song-item-cover"
+                  onError={(e) => { e.target.src = 'https://res.cloudinary.com/ditexyjne/image/upload/v1780577006/images/default-cover.jpg'; }}
                 />
 
                 <div className="song-item-details">
