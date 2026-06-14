@@ -49,12 +49,7 @@ function Layout() {
       })
       .then(res => res.ok ? res.json() : Promise.reject('Не удалось загрузить плейлисты'))
       .then(setPlaylists)
-      .catch(error => { console.error(error); toast.error('⚠️ Не удалось загрузить плейлисты'); });
-    }
-  }, []);
-
-  const handlePlaylistCreated = (newPlaylist) => setPlaylists(p => [...p, newPlaylist]);
-  const handleTrackAddedToPlaylist = (updatedPlaylist) => {
+    .catch(error => { console.error(error); /* toast.error('⚠️ Не удалось загрузить плейлисты'); */ });
     setPlaylists(p => p.map(pl => pl._id === updatedPlaylist._id ? updatedPlaylist : pl));
     if (selectedPlaylist?._id === updatedPlaylist._id) setSelectedPlaylist(updatedPlaylist);
   };
@@ -185,6 +180,12 @@ function Layout() {
     return allTracks || [];
   }, [selectedPlaylist, allTracks, playlistMatch?.params?.playlistId]);
   const currentTrack = (allTracks || []).find(track => track._id === currentTrackId) || tracksToDisplay[currentTrackIndex];
+
+  useEffect(() => {
+    if (currentTrack) {
+      console.log('Layout currentTrack.url:', currentTrack.url, 'fullSrc:', getFullUrl(currentTrack.url));
+    }
+  }, [currentTrack]);
 
   const selectTrack = (index) => {
     const track = tracksToDisplay[index];
