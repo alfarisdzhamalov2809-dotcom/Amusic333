@@ -53,6 +53,10 @@ function Layout() {
     }
   }, []);
 
+  const handlePlaylistCreated = (newPlaylist) => {
+    setPlaylists(prev => [...prev, newPlaylist]);
+  };
+
   const handleTrackAddedToPlaylist = (updatedPlaylist) => {
     setPlaylists(p => p.map(pl => pl._id === updatedPlaylist._id ? updatedPlaylist : pl));
     if (selectedPlaylist?._id === updatedPlaylist._id) setSelectedPlaylist(updatedPlaylist);
