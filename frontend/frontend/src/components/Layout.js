@@ -49,10 +49,15 @@ function Layout() {
       })
       .then(res => res.ok ? res.json() : Promise.reject('Не удалось загрузить плейлисты'))
       .then(setPlaylists)
-    .catch(error => { console.error(error); /* toast.error('⚠️ Не удалось загрузить плейлисты'); */ });
+      .catch(error => { console.error(error); /* toast.error('⚠️ Не удалось загрузить плейлисты'); */ });
+    }
+  }, []);
+
+  const handleTrackAddedToPlaylist = (updatedPlaylist) => {
     setPlaylists(p => p.map(pl => pl._id === updatedPlaylist._id ? updatedPlaylist : pl));
     if (selectedPlaylist?._id === updatedPlaylist._id) setSelectedPlaylist(updatedPlaylist);
   };
+
   const handlePlaylistSelect = (playlistId) => {
     if (playlistId) {
       // Берём полный плейлист с сервера, чтобы были все треки
