@@ -49,7 +49,7 @@ function Layout() {
       })
       .then(res => res.ok ? res.json() : Promise.reject('Не удалось загрузить плейлисты'))
       .then(setPlaylists)
-      .catch(error => { console.error(error); /* toast.error('⚠️ Не удалось загрузить плейлисты'); */ });
+      .catch(error => { console.error(error); });
     }
   }, []);
 
